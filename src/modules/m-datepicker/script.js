@@ -13,13 +13,7 @@ export default class DatePicker extends Base {
         this.currentYear = this.currentDate.getFullYear();
         this.currentDaysInMonth = this.currentDate.daysInMonth();
 
-        this.months = [
-            'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
-            'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
-        ];
-
         this.init();
-
     }
 
     /**
@@ -56,12 +50,12 @@ export default class DatePicker extends Base {
      * 
      * @param {HTMLElement} $picker - элемент, в который иницилизируются селекты
      * 
-     * @retruns Datepicker Elements
+     * @returns Datepicker Elements
      */
     _generatePickers($picker) {
-        const dayPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'День', value: '' });
-        const monthPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Месяц', value: '' });
-        const yearPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Год', value: '' });
+        const dayPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'День', value: 'default' });
+        const monthPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Месяц', value: 'default' });
+        const yearPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Год', value: 'default' });
 
         const dayPicker = this.createNode('select', { datajs: 'datepicker-day', child: dayPickerDefault });
         const monthPicker = this.createNode('select', { datajs: 'datepicker-month', child: monthPickerDefault });
@@ -75,7 +69,7 @@ export default class DatePicker extends Base {
     /**
      * Заполнение последних 90 лет
      *
-     * @param {HTMLElement} select - селект в который заполняем
+     * @param {HTMLElement} $select - селект в который заполняем
      */
     _generateYears($select) {
 
@@ -92,12 +86,12 @@ export default class DatePicker extends Base {
     /**
      * Заполнение месяцев
      *
-     * @param {HTMLElement} select - селект в который заполняем
+     * @param {HTMLElement} $select - селект в который заполняем
      */
     _generateMonths($select) {
 
         for (let i = 0; i <= 11; i++) {
-            const $option = this.createNode('option', { value: i, text: this._getMonthName(i) })
+            const $option = this.createNode('option', { value: String(i), text: this._getMonthName(i) })
 
             if (i === this.currentMonth) $option.selected = true;
 
@@ -118,8 +112,9 @@ export default class DatePicker extends Base {
         const selectDayIsNumber = typeof selectDay === 'number';
 
         const options = $select.querySelectorAll('option');
+
         if (options.length > 1) {
-            options.forEach(($opt) => { if ($opt.value !== '') $opt.remove() });
+            options.forEach(($opt) => { if ($opt.value !== 'default') $opt.remove() });
         }
 
         for (let i = 0; i < daysInMonth; i++) {
@@ -142,45 +137,6 @@ export default class DatePicker extends Base {
             $select.appendChild($option);
         }
 
-    }
-
-    /**
-     * Возвращает название месяца по номеру
-     * 
-     * @param {number} num порядковый номер месяца
-     *
-     * @returns {string} название месяца
-     */
-    _getMonthName(num) {
-        return this.months[num];
-    }
-
-    /**
-     * Проверка даты на валидность
-     * 
-     * @param {Object Date} date - Объект даты
-     *
-     * @returns {boolean} Результат проверки
-     */
-    _dateIsValid(date) {
-        return date instanceof Date && !isNaN(date);
-    }
-
-    /**
-     * Возвращает дату не учитывая часовой пояс
-     * 
-     * @param {number} year - год
-     * @param {number} month - месяц
-     * @param {number} day - день
-     *
-     * @returns {object} Date
-     */
-    _numsToDate(year, month, day) {
-        const time = 'T12:00:00.000Z';
-        month = ('0' + (month + 1)).slice(-2);
-        day = ('0' + day).slice(-2);
-
-        return new Date(`${year}-${month}-${day}${time}`);
     }
 
     /**

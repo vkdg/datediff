@@ -90,8 +90,8 @@ export default class DateDiff extends Base {
     /**
      * Вычисляет разницу между датами
      * 
-     * @param {array} $dateFrom - массив датапикера первой даты
-     * @param {array} $dateTo - массив датапикера второй даты
+     * @param {object} $dateFrom - объект датапикера первой даты
+     * @param {object} $dateTo - объект датапикера второй даты
      * 
      * @return {object} Объект, содержащий разницу между двумя датами
      */

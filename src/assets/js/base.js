@@ -1,13 +1,34 @@
-export default class Base {
+import Helpers from 'js/helpers';
+
+export default class Base extends Helpers {
+    constructor() {
+        super();
+    }
+
+    months = [
+        'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
+        'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+    ]
 
     /**
-     * Склоняет слова в зависимости от переданного числа
+     * Возвращает название месяца по номеру
      * 
-     * @param {number} num - Целевое число
-     * @param {string[]} textForms - Массив склонений
-     * 
-     * @returns Склонение
+     * @param {number} num порядковый номер месяца
+     *
+     * @returns {string} название месяца
      */
+    _getMonthName(num) {
+        return this.months[num];
+    }
+
+    /**
+    * Склоняет слова в зависимости от переданного числа
+    * 
+    * @param {number} num - Целевое число
+    * @param {string[]} textForms - Массив склонений
+    * 
+    * @returns Склонение
+    */
     pluralNum(num, textForms) {
         num = Math.abs(num) % 100;
         const num1 = num % 10;
@@ -19,33 +40,30 @@ export default class Base {
     }
 
     /**
-     * Массовое добавление потомков в родительский блок
+     * Проверка даты на валидность
      * 
-     * @param {HTMLElement} parent - Нода в которую происходит добавление
-     * @param {...HTMLElement} childs - Ноды, которые добавляем
+     * @param {Object Date} date - Объект даты
+     *
+     * @returns {boolean} Результат проверки
      */
-    multiAppend(parent, ...childs) {
-        childs.forEach(child => parent.append(child));
+    _dateIsValid(date) {
+        return date instanceof Date && !isNaN(date);
     }
 
     /**
-     * Создание элементов
+     * Возвращает дату не учитывая часовой пояс
      * 
-     * @param {string} tag - HTML тег
-     * @param {props{}} props - Различные пропсы для тега
-     * 
-     * @returns Готовая собранная нода
+     * @param {number} year - год
+     * @param {number} month - месяц
+     * @param {number} day - день
+     *
+     * @returns {object} Date
      */
-    createNode(tag, props) {
-        const node = document.createElement(tag)
+    _numsToDate(year, month, day) {
+        const time = 'T12:00:00.000Z';
+        month = ('0' + (month + 1)).slice(-2);
+        day = ('0' + day).slice(-2);
 
-        if (props.disabled) node.disabled = props.disabled
-        if (props.selected) node.selected = props.selected
-        if (props.text) node.innerText = props.text
-        if (props.value) node.value = props.value
-        if (props.datajs) node.dataset.js = props.datajs
-        if (props.child) node.appendChild(props.child)
-
-        return node
+        return new Date(`${year}-${month}-${day}${time}`);
     }
 }
