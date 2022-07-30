@@ -1,6 +1,7 @@
 export default class Base {
 
     /**
+     * Склоняет слова в зависимости от переданного числа
      * 
      * @param {number} num - Целевое число
      * @param {string[]} textForms - Массив склонений

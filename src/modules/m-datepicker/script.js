@@ -59,38 +59,29 @@ export default class DatePicker extends Base {
      * @retruns Datepicker Elements
      */
     _generatePickers($picker) {
+        const createSelect = (node, datajs, defaultOptionNode) => {
+            node.dataset.js = datajs;
+            node.appendChild(defaultOptionNode);
 
-        const dayPicker = document.createElement('select');
-        const monthPicker = document.createElement('select');
-        const yearPicker = document.createElement('select');
+            return node;
+        }
 
-        dayPicker.dataset.js = 'datepicker-day';
-        monthPicker.dataset.js = 'datepicker-month';
-        yearPicker.dataset.js = 'datepicker-year';
+        const createOption = (node, disabled, selected, text, value) => {
+            node.disabled = disabled;
+            node.selected = selected;
+            node.innerText = text;
+            node.value = value;
 
-        const dayPickerDefault = document.createElement('option');
-        const monthPickerDefault = document.createElement('option');
-        const yearPickerDefault = document.createElement('option');
+            return node;
+        }
 
-        dayPickerDefault.disabled = true;
-        monthPickerDefault.disabled = true;
-        yearPickerDefault.disabled = true;
+        const dayPickerDefault = createOption(document.createElement('option'), true, true, 'День', '');
+        const monthPickerDefault = createOption(document.createElement('option'), true, true, 'Месяц', '');
+        const yearPickerDefault = createOption(document.createElement('option'), true, true, 'Год', '');
 
-        dayPickerDefault.selected = true;
-        monthPickerDefault.selected = true;
-        yearPickerDefault.selected = true;
-
-        dayPickerDefault.innerText = 'День';
-        monthPickerDefault.innerText = 'Месяц';
-        yearPickerDefault.innerText = 'Год';
-
-        dayPickerDefault.value = '';
-        monthPickerDefault.value = '';
-        yearPickerDefault.value = '';
-
-        dayPicker.appendChild(dayPickerDefault);
-        monthPicker.appendChild(monthPickerDefault);
-        yearPicker.appendChild(yearPickerDefault);
+        const dayPicker = createSelect(document.createElement('select'), 'datepicker-day', dayPickerDefault);
+        const monthPicker = createSelect(document.createElement('select'), 'datepicker-month', monthPickerDefault);
+        const yearPicker = createSelect(document.createElement('select'), 'datepicker-year', yearPickerDefault);
 
         $picker.appendChild(dayPicker);
         $picker.appendChild(monthPicker);
