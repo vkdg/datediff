@@ -59,36 +59,17 @@ export default class DatePicker extends Base {
      * @retruns Datepicker Elements
      */
     _generatePickers($picker) {
-        const createSelect = (node, datajs, defaultOptionNode) => {
-            node.dataset.js = datajs;
-            node.appendChild(defaultOptionNode);
+        const dayPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'День', value: '' });
+        const monthPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Месяц', value: '' });
+        const yearPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Год', value: '' });
 
-            return node;
-        }
+        const dayPicker = this.createNode('select', { datajs: 'datepicker-day', child: dayPickerDefault });
+        const monthPicker = this.createNode('select', { datajs: 'datepicker-month', child: monthPickerDefault });
+        const yearPicker = this.createNode('select', { datajs: 'datepicker-year', child: yearPickerDefault });
 
-        const createOption = (node, disabled, selected, text, value) => {
-            node.disabled = disabled;
-            node.selected = selected;
-            node.innerText = text;
-            node.value = value;
-
-            return node;
-        }
-
-        const dayPickerDefault = createOption(document.createElement('option'), true, true, 'День', '');
-        const monthPickerDefault = createOption(document.createElement('option'), true, true, 'Месяц', '');
-        const yearPickerDefault = createOption(document.createElement('option'), true, true, 'Год', '');
-
-        const dayPicker = createSelect(document.createElement('select'), 'datepicker-day', dayPickerDefault);
-        const monthPicker = createSelect(document.createElement('select'), 'datepicker-month', monthPickerDefault);
-        const yearPicker = createSelect(document.createElement('select'), 'datepicker-year', yearPickerDefault);
-
-        $picker.appendChild(dayPicker);
-        $picker.appendChild(monthPicker);
-        $picker.appendChild(yearPicker);
+        this.multiAppend($picker, dayPicker, monthPicker, yearPicker);
 
         return { dayPicker, monthPicker, yearPicker }
-
     }
 
     /**
@@ -99,13 +80,9 @@ export default class DatePicker extends Base {
     _generateYears($select) {
 
         for (let i = 0; i < 90; i++) {
-            const $option = document.createElement('option');
-            $option.value = this.currentYear - i;
-            $option.innerText = this.currentYear - i;
+            const $option = this.createNode('option', { value: this.currentYear - i, text: this.currentYear - i });
 
-            if (this.currentYear - i === this.currentYear) {
-                $option.selected = true;
-            }
+            if (this.currentYear - i === this.currentYear) $option.selected = true;
 
             $select.appendChild($option);
         }
@@ -120,13 +97,9 @@ export default class DatePicker extends Base {
     _generateMonths($select) {
 
         for (let i = 0; i <= 11; i++) {
-            const $option = document.createElement('option');
-            $option.value = i;
-            $option.innerText = this._getMonthName(i);
+            const $option = this.createNode('option', { value: i, text: this._getMonthName(i) })
 
-            if (i === this.currentMonth) {
-                $option.selected = true;
-            }
+            if (i === this.currentMonth) $option.selected = true;
 
             $select.appendChild($option);
         }
@@ -150,9 +123,7 @@ export default class DatePicker extends Base {
         }
 
         for (let i = 0; i < daysInMonth; i++) {
-            const $option = document.createElement('option');
-            $option.value = i + 1;
-            $option.innerText = i + 1;
+            const $option = this.createNode('option', { value: i + 1, text: i + 1 });
 
             if (selectDay === 'current') {
                 if (i + 1 === this.currentDay) {
