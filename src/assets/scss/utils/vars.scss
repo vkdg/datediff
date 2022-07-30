@@ -1,0 +1,7 @@
+$color_bg_default: #ffffff;
+$color_border: #f0f0f0;
+
+:root {
+    --color-bg-default: #{$color_bg_default};
+    --color-border: #{$color_border};
+}
