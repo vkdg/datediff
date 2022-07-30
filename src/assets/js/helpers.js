@@ -27,6 +27,14 @@ export default class Helpers {
         if (props.datajs) node.dataset.js = props.datajs
         if (props.child) node.appendChild(props.child)
 
+        if (props.cls) {
+            if (typeof props.cls === 'array') {
+                node.classList.add(...props.cls)
+            } else if (typeof props.cls === 'string') {
+                node.classList.add(props.cls)
+            }
+        }
+
         return node
     }
 }

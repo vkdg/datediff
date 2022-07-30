@@ -53,6 +53,7 @@ export default class DatePicker extends Base {
      * @returns Datepicker Elements
      */
     _generatePickers($picker) {
+
         const dayPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'День', value: 'default' });
         const monthPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Месяц', value: 'default' });
         const yearPickerDefault = this.createNode('option', { selected: true, disabled: true, text: 'Год', value: 'default' });
@@ -61,7 +62,11 @@ export default class DatePicker extends Base {
         const monthPicker = this.createNode('select', { datajs: 'datepicker-month', child: monthPickerDefault });
         const yearPicker = this.createNode('select', { datajs: 'datepicker-year', child: yearPickerDefault });
 
-        this.multiAppend($picker, dayPicker, monthPicker, yearPicker);
+        const dayPickerContainer = this.createNode('div', { child: dayPicker, cls: 'm-datepicker__select' });
+        const monthPickerContainer = this.createNode('div', { child: monthPicker, cls: 'm-datepicker__select' });
+        const yearPickerContainer = this.createNode('div', { child: yearPicker, cls: 'm-datepicker__select' });
+
+        this.multiAppend($picker, dayPickerContainer, monthPickerContainer, yearPickerContainer);
 
         return { dayPicker, monthPicker, yearPicker }
     }
