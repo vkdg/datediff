@@ -74,6 +74,20 @@ export default class DateDiff extends Base {
     }
 
     /**
+     * Извлекает числовые данные из инпутов
+     * 
+     * @param {object} $inputs - объект с селектами, содержащими выбранные даты
+     * @returns {number[]} - массив из чисел полученных из селектов
+     */
+    _extractInputsNumbers($inputs) {
+        return [
+            Number($inputs.$year.value),
+            Number($inputs.$month.value),
+            Number($inputs.$day.value),
+        ]
+    }
+
+    /**
      * Вычисляет разницу между датами
      * 
      * @param {array} $dateFrom - массив датапикера первой даты
@@ -82,16 +96,8 @@ export default class DateDiff extends Base {
      * @return {object} Объект, содержащий разницу между двумя датами
      */
     _calcDifference($dateFrom, $dateTo) {
-        const dateFrom = new Date(
-            Number($dateFrom.$year.value),
-            Number($dateFrom.$month.value),
-            Number($dateFrom.$day.value)
-        );
-        const dateTo = new Date(
-            Number($dateTo.$year.value),
-            Number($dateTo.$month.value),
-            Number($dateTo.$day.value)
-        );
+        const dateFrom = new Date(...this._extractInputsNumbers($dateFrom));
+        const dateTo = new Date(...this._extractInputsNumbers($dateTo));
 
         let diff;
 
